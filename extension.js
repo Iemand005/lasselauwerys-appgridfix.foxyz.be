@@ -19,23 +19,16 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import Clutter from 'gi://Clutter';
-// import AppDisplay from 'resource:///org/gnome/shell/ui/appDisplay.js'
 
 export default class PlainExampleExtension extends Extension {
     enable() {
         const appDisplay = Main.overview._overview._controls._appDisplay;
-        
-        // log('Overview grid:', appDisplay, appDisplay._grid);
-        log("I'm okay!");
-        
         const appGrid = appDisplay._grid;
         const swipeTracker = appGrid._delegate._swipeTracker;
 
         const children = appGrid.get_children();
 
         for (let i = 0; i < children.length; ++i) {
-            // appIcon = r(196);
-            // console.debug('appIcon', appIcon);
             console.debug(i);
             const appIcon = children[i];
 
@@ -47,7 +40,6 @@ export default class PlainExampleExtension extends Extension {
                 const coords = event.get_coords();
                 const time = event.get_time();
                 const pos = coords[0];
-                // const delta = appGrid._currentPage - (pos - startPos);
                 const distance = appGrid._delegate._adjustment.page_size;
                 const progress = appGrid._currentPage - (pos - startPos) / appGrid._delegate._adjustment.page_size;
                 
@@ -55,7 +47,7 @@ export default class PlainExampleExtension extends Extension {
                 
                 switch (type) {
                     case Clutter.EventType.TOUCH_BEGIN:
-                    appGrid._delegate._swipeTracker._beginTouchSwipe(this, time, coords[0], coords[1]);
+                    swipeTracker._beginTouchSwipe(this, time, coords[0], coords[1]);
                     startPos = pos;
                     lastPos = startPos;
 
@@ -66,15 +58,11 @@ export default class PlainExampleExtension extends Extension {
                     const delta = -(pos - lastPos);
                     lastPos = pos;
 
-                    appGrid._delegate._swipeTracker._updateGesture(this, time, delta, distance);
-
-                    // swipeTracker.emit('update', progress);
+                    swipeTracker._updateGesture(this, time, delta, distance);
                     break;
                 case Clutter.EventType.TOUCH_END:
-                    // swipeTracker.emit('end', 3, Math.round(progress));
-                    appGrid._delegate._swipeTracker._endTouchGesture(this, time, distance);
+                    swipeTracker._endTouchGesture(this, time, distance);
                     return true;
-                    break;
                 }
             });
         }
