@@ -1,7 +1,7 @@
 {
   "name": "App Grid Fixer",
   "description": "Fixes the app grid for touchscreens",
-  "uuid": "lasselauwerys@foxyz.be",
+  "uuid": "lasselauwerys@appgridfix.foxyz.be",
   "shell-version": [
     "48"
   ]
